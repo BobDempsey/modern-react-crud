@@ -1,8 +1,16 @@
+// components
+import CustomForm from "./components/CustomForm";
+
 function App() {
+  const addTask = (task) => {
+    console.log(task);
+  };
+
   return (
-    <>
-      <h1>Vite + React</h1>
-    </>
+    <div className="container">
+      <h1>My Task List</h1>
+      <CustomForm addTask={addTask} />
+    </div>
   );
 }
 
