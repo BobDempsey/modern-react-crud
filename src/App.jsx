@@ -1,18 +1,22 @@
-// components
+// custom components
 import { useState } from "react";
 import CustomForm from "./components/CustomForm";
 import EditForm from "./components/EditForm";
 import TaskList from "./components/TaskList";
+import ThemeSwitcher from "./components/ThemeSwitcher";
+
+// custom hooks
+import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useLocalStorage("react-todo.tasks", []);
   const [editedTask, setEditedTask] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [previousFocusEl, setPreviousFocusEl] = useState(null);
+  // const [previousFocusEl, setPreviousFocusEl] = useState(null);
 
   const addTask = (task) => {
     setTasks((prevState) => [...prevState, task]);
-    console.log(task);
   };
 
   const deleteTask = (id) => {
@@ -36,13 +40,13 @@ function App() {
 
   const closeEditMode = () => {
     setIsEditing(false);
-    previousFocusEl.focused();
+    // previousFocusEl.focused();
   };
 
   const enterEditMode = (task) => {
     setEditedTask(task);
     setIsEditing(true);
-    setPreviousFocusEl(document.activeElement);
+    // setPreviousFocusEl(document.activeElement);
   };
   return (
     <div className="container">
@@ -52,7 +56,11 @@ function App() {
       <CustomForm addTask={addTask} />
 
       {isEditing && (
-        <EditForm editedTask={editedTask} updateTask={updateTask} />
+        <EditForm
+          editedTask={editedTask}
+          updateTask={updateTask}
+          closeEditMode={closeEditMode}
+        />
       )}
 
       {tasks && (
@@ -63,6 +71,7 @@ function App() {
           enterEditMode={enterEditMode}
         />
       )}
+      <ThemeSwitcher />
     </div>
   );
 }
