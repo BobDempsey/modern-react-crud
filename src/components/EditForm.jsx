@@ -1,10 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // library imports
 import { CheckIcon } from "@heroicons/react/24/solid";
 
-function EditForm({ editedTask, updateTask }) {
+function EditForm({ editedTask, updateTask, closeEditMode }) {
   const [updatedTaskName, setUpdatedTaskName] = useState(editedTask.name);
+
+  const closeModalIfEscaped = (e) => {
+    e.key === "Escape" && closeEditMode();
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", closeModalIfEscaped);
+
+    return () => {
+      window.removeEventListener("keydown", closeModalIfEscaped);
+    };
+  }, [closeEditMode]);
 
   // submit form
   const handleFormSubmit = (e) => {
@@ -17,7 +29,9 @@ function EditForm({ editedTask, updateTask }) {
     <div
       role="dialog"
       aria-labelledby="edit"
-      // onClick={}
+      onClick={(e) => {
+        e.target === e.currentTarget && closeEditMode();
+      }}
     >
       <form className="todo" onSubmit={handleFormSubmit}>
         <div className="wrapper">
